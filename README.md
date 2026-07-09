@@ -1,193 +1,131 @@
-# LogisticSmart 📦
+# Agis Ops 🧭
 
 <div align="center">
 
 ![Python](https://img.shields.io/badge/python-v3.10+-blue.svg)
-![Streamlit](https://img.shields.io/badge/streamlit-v1.31+-red.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Status](https://img.shields.io/badge/status-production-brightgreen.svg)
-![Version](https://img.shields.io/badge/version-v2.0.0-blue.svg)
+![FastAPI](https://img.shields.io/badge/fastapi-v0.100+-green.svg)
+![Celery](https://img.shields.io/badge/celery-v5.3+-orange.svg)
+![Docker](https://img.shields.io/badge/docker-v24+-blue.svg)
+![PostgreSQL](https://img.shields.io/badge/postgresql-15-blue.svg)
+![Redis](https://img.shields.io/badge/redis-7-red.svg)
+![Version](https://img.shields.io/badge/version-v3.0.0--alpha-blue.svg)
 
-**Intelligent System for Analysis and Management of Logistics Deliveries**
+**Plataforma de Decisão Cognitiva Operacional e Orquestração Física**
 
-*Smart data processing, interactive visualizations, and professional reports*
+*Gestão avançada de status de entrega baseada em OCC State Engine, APIs assíncronas JWT e processamento distribuído.*
 
 [🇺🇸 English](./README.md) | [🇧🇷 Português](./docs/pt-br/README.md)
 
-[🚀 Live Demo](https://logisticsmartx33beta.streamlit.app/) | [📖 Documentation](./docs/) | [🐛 Issues](https://github.com/NEO-SH1W4/LogisticSmart/issues)
+[📖 Documentation](./docs/AGIS_CODEMAP.md) | [🐛 Issues](https://github.com/SH1W4/agis-os/issues)
 
 </div>
 
-## ✨ Main Features
+---
 
-🔐 **Secure Authentication**: Login system with 3 access levels (Admin, User, Visitor)  
-📊 **Intelligent Processing**: Automatic column and data structure detection  
-🎛️ **Adaptive Filters**: Filter system that adapts to the loaded data structure  
-📈 **Interactive Dashboard**: Modern visualizations with Plotly and real-time charts  
-📥 **Multiple Export Options**: Support for Excel, CSV, PDF, and Word for professional reports  
-🔍 **Quality Analysis**: Validation and recommendations for data improvement  
-⚡ **Smart Cache**: Cache system for improved performance with large volumes  
-🎨 **Modern Interface**: Responsive and intuitive design for a better experience
+## ✨ Principais Características (v3.0.0)
 
-## 📊 Market Value
+🧠 **OCC State Engine**: Motor dinâmico baseado em estados cognitivos fluidos (*Representations, Knowledge, Beliefs, Intentions, Decisions*) para avaliar rotas, entregas e status de motoristas sem depender de flags estáticas no banco.
 
-- **Segment**: Logistics and Supply Chain Management
-- **Time Savings**: 70-85% in report generation
-- **Estimated ROI**: 200-400% in 12 months for medium enterprises
-- **Potential Users**: 500M+ logistics professionals globally
+🔐 **FastAPI com JWT Auth**: API assíncrona robusta protegida por tokens JWT com controle granular baseado em Roles e escopos (*Admin, User, Visitor*).
 
-## 🚀 Quick Installation
+⚡ **Arquitetura Distribuída**: Workers assíncronos em Celery utilizando Redis como broker de mensagens, desonerando o servidor de API de rotinas pesadas de geolocalização e roteirização.
 
+🐳 **Infraestrutura em Containers**: Configuração Docker Compose com instâncias isoladas do PostgreSQL 15 e Redis 7.
+
+🛣️ **Motor de Otimização**: Algoritmos eficientes para agrupamento de rotas (*Nearest Neighbor*) e atribuição dinâmica com base em geolocalização em tempo real.
+
+📊 **Design System Premium**: Guia conceitual de UI/UX moderno projetado com Glassmorphism e paletas escuras otimizadas para centros de controle operacionais (COP).
+
+---
+
+## 🏗️ Estrutura do Projeto
+
+Para uma navegação detalhada sobre a responsabilidade de cada diretório e arquivo, veja o [Agis CodeMap](./docs/AGIS_CODEMAP.md).
+
+```
+agis-os/
+├── src/                            # Módulo Core da Aplicação
+│   ├── api/                        # endpoints FastAPI, Rotas e JWT Middleware
+│   ├── config/                     # Pydantic Settings e configurações globais
+│   ├── database/                   # Modelos ORM SQLAlchemy e Conexões
+│   └── operational_state/          # Motor cognitivo de transições OCC
+├── workers/                        # Configuração do Celery e Tarefas Assíncronas
+├── alembic/                        # Controle de Histórico de Migrações do Banco
+├── docs/                           # Guias técnicos de arquitetura e UI/UX
+└── docker-compose.yml              # PostgreSQL e Redis Orchestration
+```
+
+---
+
+## 🚀 Como Iniciar
+
+### 1. Pré-requisitos
+Certifique-se de ter instalado em sua máquina:
+- Python 3.10+
+- Docker & Docker Compose
+
+### 2. Clonar e Instalar Dependências
 ```bash
-# Via Git (recommended)
-git clone https://github.com/NEO-SH1W4/LogisticSmart.git
-cd LogisticSmart
+git clone https://github.com/SH1W4/agis-os.git
+cd agis-os
 
-# Create virtual environment
+# Criar ambiente virtual
 python -m venv venv
 venv\Scripts\activate  # Windows
 # source venv/bin/activate  # Linux/Mac
 
-# Install dependencies
+# Instalar dependências do projeto
 pip install -r requirements.txt
 ```
 
-## 💡 Quick Start
-
-### 1. Run the Application
+### 3. Iniciar Infraestrutura Local (Docker)
 ```bash
-# Activate virtual environment
-venv\Scripts\activate
-
-# Run application
-streamlit run app.py
+docker-compose up -d
 ```
+Isso iniciará os containers do PostgreSQL 15 (`agis-postgres`) e Redis 7 (`agis-redis`).
 
-### 2. First Login
-```
-User: admin
-Password: admin123
-```
-
-### 3. Upload and Analyze
-1. Upload Excel/CSV file
-2. Configure automatically detected filters
-3. View data on the interactive dashboard
-4. Export reports in multiple formats
-
-## 🧩 Access Levels
-
-| Role | Permissions | Description |
-|--------|------------|-----------|
-| 👑 **Admin** | ✅ Full | Upload, analysis, export, advanced settings |
-| 👤 **User** | 📊 Analysis | File upload, data analysis, and export |
-| 👁️ **Visitor** | 👀 Read-Only | Viewing existing reports and dashboards |
-
-## 📚 Documentation
-
-- 🏃‍♂️ [**Quick Start Guide**](./docs/QUICKSTART.md)
-- 🎯 [**User Manual**](./docs/USER_GUIDE.md)
-- 🤝 [**Contribution Guide**](./CONTRIBUTING.md)
-- 📋 [**Changelog**](./CHANGELOG.md)
-- 📋 [**Tasks and Status**](./TASKS.md)
-
-## 🛠️ For Developers
-
-### Code Quality
+### 4. Rodar Migrações do Banco
+Execute as migrações com o Alembic para criar as tabelas estruturadas no PostgreSQL:
 ```bash
-# Formatting and linting
-black . && isort . && flake8
-
-# Tests with coverage
-pytest --cov=src --cov-report=html
-
-# Type checking
-mypy src/
+alembic upgrade head
 ```
 
-### Project Structure
+### 5. Iniciar Serviços do Agis
+Em terminais diferentes, ative o ambiente virtual e execute:
+
+**Iniciar API FastAPI**:
+```bash
+python run_api.py
 ```
-LogisticSmart/
-├── src/                    # Main code
-│   ├── auth/              # Authentication system
-│   ├── components/        # UI components
-│   ├── config/            # Configurations
-│   └── utils/             # Utilities and processing
-├── tests/                 # Automated tests
-├── docs/                  # Documentation
-├── .github/               # Templates and CI/CD
-└── app.py                 # Main application
+A API estará rodando em `http://localhost:8000`. Acesse `/docs` para ver o Swagger interativo.
+
+**Iniciar Celery Workers**:
+```bash
+python run_worker.py
 ```
 
-## 🤝 Contributing
+---
 
-Contributions are very welcome! This project has the potential to positively impact the logistics sector.
+## 📚 Documentação Técnica
 
-1. 🍴 Fork the project
-2. 🌟 Create your feature branch
-3. ✅ Add tests
-4. 📝 Update the documentation
-5. 🚀 Open a Pull Request
+- 🧭 [**CodeMap do Repositório**](./docs/AGIS_CODEMAP.md)
+- 🧠 [**Arquitetura Cognitiva (OCC)**](./docs/AGIS_OCC_ARCHITECTURE.md)
+- 📖 [**Manual de Integração de API e JWT**](./docs/AGIS_INTEGRATION_GUIDE.md)
+- 🔧 [**Guia de Operações e Deploy**](./docs/pt-br/AGIS_OPS_SKILL.md)
+- 🎨 [**UI/UX Design Guide & Stitch Prompts**](./docs/ui-design/UI_UX_DESIGN_GUIDE.md)
 
-See the [complete contribution guide](./CONTRIBUTING.md).
+---
 
-## 🎯 Roadmap
+## 🏆 Licença
 
-### v2.1.0 (Q1 2025)
-- 🔗 Integration with carrier APIs
-- 🧠 AI for delay prediction
-- 🧩 Plugin system
-
-### v2.2.0 (Q2 2025)
-- 🌐 Advanced web interface
-- 📊 Analytics dashboard
-- 👥 Multi-tenant support
-
-### v3.0.0 (Q3 2025)
-- 🏢 Enterprise features
-- 📞 Professional support
-- 🚀 Production-scale release
-
-## 📈 Project Metrics
-
-- **Lines of Code**: 2,000+
-- **Test Coverage**: 80%+
-- **Dependencies**: 17 main
-- **Python Files**: 15+
-- **Setup Time**: < 5 minutes
-
-## 🏆 Use Cases
-
-### 🚛 Transportation Companies
-- Delivery control per driver
-- Route performance analysis
-- Productivity reports
-
-### 🏭 Industries
-- Order tracking
-- Reverse logistics control
-- SLA metrics
-
-### 🛒 E-commerce
-- Last-mile monitoring
-- Customer satisfaction analysis
-- Delivery optimization
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🌟 Acknowledgments
-
-Built with ❤️ for the logistics community. If this project helped you, consider giving it a ⭐!
+Este projeto é licenciado sob a MIT License. Veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
 
 <div align="center">
 
-**[🏠 Homepage](https://github.com/NEO-SH1W4/LogisticSmart) • [📖 Docs](https://github.com/NEO-SH1W4/LogisticSmart#readme) • [🐛 Issues](https://github.com/NEO-SH1W4/LogisticSmart/issues) • [💬 Discussions](https://github.com/NEO-SH1W4/LogisticSmart/discussions)**
+**[🏠 Homepage](https://github.com/SH1W4/agis-os) • [🐛 Issues](https://github.com/SH1W4/agis-os/issues)**
 
-**Developed by NEO-SH1W4 | Version 2.0.0 | Last update: January 2025**
+**Desenvolvido por SH1W4 | Versão 3.0.0-alpha**
 
 </div>
-
