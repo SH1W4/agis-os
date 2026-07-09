@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/docs/comercial/index.html" },
+    { "source": "/roi_calculator.html", "destination": "/docs/comercial/roi_calculator.html" },
+    { "source": "/(.*)", "destination": "/docs/comercial/$1" }
+  ]
+}
