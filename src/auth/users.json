@@ -1,0 +1,20 @@
+{
+  "admin": {
+    "password_hash": "$2b$12$M1O6odVCNRG90.G.vhACWeH7IzTuHGdIcOqPuQU2RyZzf7ekda27O",
+    "role": "admin",
+    "name": "Administrador",
+    "active": true
+  },
+  "visitante": {
+    "password_hash": "$2b$12$EMMe0MRnNWz1H7FdoognteCOh4TIEnFvAubYVe5u1pZGCWJRaR00y",
+    "role": "viewer",
+    "name": "Visitante",
+    "active": true
+  },
+  "neo": {
+    "password_hash": "$2b$12$KtE/josaBzVcG0tO0klPOe6o.4HfhM3gidXusqCu3fqQdCE/A5F/W",
+    "role": "admin",
+    "name": "Neo",
+    "active": true
+  }
+}
