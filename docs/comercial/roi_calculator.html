@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Agis Ops — Calculadora de ROI interativa. Calcule o desperdício evitado, ROI mensal e retorno líquido do investimento da sua operação logística."/>
   <title>Agis Ops — Calculadora de ROI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -71,7 +72,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 24px;
     }
-    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
 
     /* CARDS */
     .card {
@@ -92,7 +93,8 @@
     /* INPUTS */
     .field { margin-bottom: 18px; }
     label {
-      display: block;
+      display: flex;
+      align-items: center;
       font-size: 13px;
       font-weight: 500;
       color: #94a3b8;
@@ -102,13 +104,6 @@
       position: relative;
       display: flex;
       align-items: center;
-    }
-    .prefix {
-      position: absolute;
-      left: 12px;
-      font-size: 13px;
-      color: var(--muted);
-      pointer-events: none;
     }
     input[type="range"] {
       width: 100%;
@@ -144,6 +139,40 @@
     }
     .range-label { font-size: 12px; color: var(--muted); }
 
+    /* TOOLTIPS */
+    .tooltip {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 14px;
+      font-size: 10px;
+      color: var(--accent);
+      cursor: help;
+      margin-left: 6px;
+      position: relative;
+    }
+    .tooltip:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text);
+      white-space: normal;
+      width: 220px;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
     /* RESULT CARD */
     .result-card {
       background: linear-gradient(135deg, #0f1f0f 0%, #0a1a12 100%);
@@ -175,6 +204,7 @@
       font-weight: 800;
       letter-spacing: -1px;
       line-height: 1;
+      transition: all 0.3s ease;
     }
     .metric-label {
       font-size: 12px;
@@ -213,7 +243,6 @@
     .breakdown-row:last-child { border-bottom: none; }
     .breakdown-label { color: #94a3b8; }
     .breakdown-val { font-weight: 600; }
-    .loss { color: var(--red); }
     .saving { color: var(--green); }
     .cost { color: var(--amber); }
 
@@ -262,6 +291,19 @@
     .plan-name { font-size: 13px; font-weight: 700; display: block; }
     .plan-price { font-size: 11px; margin-top: 3px; }
 
+    /* ALERTA PLANO INSUFICIENTE */
+    .plan-alert {
+      display: none;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.25);
+      color: var(--amber);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
     /* SEPARATOR */
     .divider {
       border: none;
@@ -269,14 +311,23 @@
       margin: 28px 0;
     }
 
-    /* CTA */
+    /* CTA & ACTIONS */
     .cta {
       text-align: center;
       margin-top: 32px;
     }
     .cta-text { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .actions-bar {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
     .cta-btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background: var(--accent);
       color: white;
       font-family: 'Inter', sans-serif;
@@ -287,18 +338,135 @@
       text-decoration: none;
       transition: all 0.2s;
       box-shadow: 0 0 24px rgba(59,130,246,0.3);
+      border: none;
+      cursor: pointer;
     }
     .cta-btn:hover {
       background: #2563eb;
       transform: translateY(-1px);
       box-shadow: 0 0 32px rgba(59,130,246,0.4);
     }
+    .btn-secondary {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: none;
+    }
+    .btn-secondary:hover {
+      background: var(--surface);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: none;
+    }
+
+    /* ADVANCED CONFIG DETAILS */
+    details {
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    details[open] {
+      border-color: var(--accent);
+    }
+    summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted-2);
+      outline: none;
+      user-select: none;
+    }
+    summary:hover {
+      color: var(--text);
+    }
+    .advanced-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    @media (max-width: 640px) { .advanced-grid { grid-template-columns: 1fr; } }
+
+    /* BENCHMARK & SIMULATOR */
+    .extra-insights {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 24px;
+    }
+    @media (max-width: 640px) { .extra-insights { grid-template-columns: 1fr; } }
+    
+    .insight-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .insight-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .insight-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .insight-row:last-child { margin-bottom: 0; }
+    .insight-val { font-weight: 700; color: var(--text); }
+    .insight-status-green { color: var(--green); font-size: 12px; margin-top: 10px; font-weight: 600; }
+    
+    .sim-card-sem {
+      background: rgba(239,68,68,0.04);
+      border: 1px solid rgba(239,68,68,0.15);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .sim-card-com {
+      background: rgba(16,185,129,0.04);
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .sim-val { font-size: 20px; font-weight: 800; margin-top: 6px; }
+    .sim-val.red { color: var(--red); }
+    .sim-val.green { color: var(--green); }
 
     footer {
       text-align: center;
       margin-top: 40px;
       font-size: 12px;
       color: var(--muted);
+    }
+
+    /* PRINT STYLING */
+    @media print {
+      body { background: white; color: black; padding: 0; }
+      .container { max-width: 100%; }
+      .card, .result-card, .insight-box, .sim-card-sem, .sim-card-com, details {
+        background: white !important;
+        border: 1px solid #ccc !important;
+        color: black !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+      .metric-value, .range-val, .breakdown-val, .verdict-text, .sim-val {
+        color: black !important;
+      }
+      input[type="range"], .plans, .plan-btn, details summary, .cta, footer, .tooltip {
+        display: none !important;
+      }
+      details[open] {
+        display: block !important;
+      }
     }
   </style>
 </head>
@@ -317,7 +485,10 @@
       <div class="card-title">Sua Operação</div>
 
       <div class="field">
-        <label>Pedidos por dia</label>
+        <label>
+          Pedidos por dia
+          <span class="tooltip" title="Volume médio diário de pacotes expedidos/entregues no seu hub logístico.">ℹ️</span>
+        </label>
         <input type="range" id="pedidos" min="50" max="3000" step="50" value="300" oninput="calc()">
         <div class="value-display">
           <span class="range-val" id="pedidos-val">300</span>
@@ -326,7 +497,10 @@
       </div>
 
       <div class="field">
-        <label>Ticket médio por pedido</label>
+        <label>
+          Ticket médio por pedido
+          <span class="tooltip" title="Valor comercial médio de cada pacote/carga transportada.">ℹ️</span>
+        </label>
         <input type="range" id="ticket" min="20" max="300" step="5" value="80" oninput="calc()">
         <div class="value-display">
           <span class="range-val" id="ticket-val">R$ 80</span>
@@ -335,7 +509,10 @@
       </div>
 
       <div class="field">
-        <label>Custo médio de frete/entrega</label>
+        <label>
+          Custo médio de frete/entrega
+          <span class="tooltip" title="Custo de logística de entrega unitária pago ao motorista/transportador.">ℹ️</span>
+        </label>
         <input type="range" id="frete" min="5" max="30" step="1" value="12" oninput="calc()">
         <div class="value-display">
           <span class="range-val" id="frete-val">R$ 12</span>
@@ -344,7 +521,10 @@
       </div>
 
       <div class="field">
-        <label>Pessoas na operação</label>
+        <label>
+          Pessoas na operação
+          <span class="tooltip" title="Quantidade de analistas de atendimento e controle operacional dedicados a tratar problemas de entrega.">ℹ️</span>
+        </label>
         <input type="range" id="pessoas" min="1" max="50" step="1" value="5" oninput="calc()">
         <div class="value-display">
           <span class="range-val" id="pessoas-val">5</span>
@@ -373,12 +553,19 @@
         </button>
       </div>
 
+      <div class="plan-alert" id="plano-alerta">
+        ⚠️ <strong>Capacidade Excedida:</strong> Para <span id="alerta-pedidos">0</span> pedidos/dia, o plano recomendado é o <strong id="alerta-plano">Operador</strong>.
+      </div>
+
       <hr class="divider">
 
       <div class="card-title">Parâmetros de Perda (estimativa do setor)</div>
 
       <div class="field">
-        <label>% de pedidos com falha de rastreamento</label>
+        <label>
+          % de pedidos com falha de rastreamento
+          <span class="tooltip" title="Pedidos que apresentam status congelados, atrasos operacionais ou reclamações de falta de rastreio.">ℹ️</span>
+        </label>
         <input type="range" id="pct-falha" min="0.5" max="10" step="0.5" value="2" oninput="calc()">
         <div class="value-display">
           <span class="range-val" id="pct-falha-val">2%</span>
@@ -387,7 +574,10 @@
       </div>
 
       <div class="field">
-        <label>Horas/dia gastas resolvendo ocorrências</label>
+        <label>
+          Horas/dia gastas resolvendo ocorrências
+          <span class="tooltip" title="Tempo médio diário que cada operador gasta rastreando motoristas e respondendo chats.">ℹ️</span>
+        </label>
         <input type="range" id="horas" min="0.5" max="8" step="0.5" value="2" oninput="calc()">
         <div class="value-display">
           <span class="range-val" id="horas-val">2h</span>
@@ -396,6 +586,76 @@
       </div>
     </div>
   </div>
+
+  <!-- ADVANCED COEFFICIENTS -->
+  <details>
+    <summary>⚙️ Parâmetros Avançados (ajustar coeficientes industriais)</summary>
+    <div class="advanced-grid">
+      <div>
+        <div class="field">
+          <label>
+            % de falhas que geram reentrega
+            <span class="tooltip" title="Proporção de problemas de rastreamento que culminam na necessidade física de reentrega cobrada.">ℹ️</span>
+          </label>
+          <input type="range" id="pct-reentrega" min="30" max="95" step="5" value="70" oninput="calc()">
+          <div class="value-display">
+            <span class="range-val" id="pct-reentrega-val">70%</span>
+            <span class="range-label">das falhas</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            % de falhas que viram devolução/cancelamento
+            <span class="tooltip" title="Pacotes que são totalmente devolvidos/cancelados por falha crônica no last-mile.">ℹ️</span>
+          </label>
+          <input type="range" id="pct-devolucao" min="10" max="60" step="5" value="30" oninput="calc()">
+          <div class="value-display">
+            <span class="range-val" id="pct-devolucao-val">30%</span>
+            <span class="range-label">das falhas</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            Custo percentual de devolução
+            <span class="tooltip" title="Fração do valor total do ticket do produto perdida em custos de devolução e fricção.">ℹ️</span>
+          </label>
+          <input type="range" id="pct-custo-dev" min="5" max="40" step="5" value="15" oninput="calc()">
+          <div class="value-display">
+            <span class="range-val" id="pct-custo-dev-val">15%</span>
+            <span class="range-label">do valor do ticket</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="field">
+          <label>
+            % de eficiência de tempo recuperada
+            <span class="tooltip" title="Proporção do tempo de atendimento manual eliminado pelo uso de decisões do motor OCC.">ℹ️</span>
+          </label>
+          <input type="range" id="pct-horas-rec" min="30" max="90" step="5" value="60" oninput="calc()">
+          <div class="value-display">
+            <span class="range-val" id="pct-horas-rec-val">60%</span>
+            <span class="range-label">das horas manuais</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>
+            Custo/hora total do operador
+            <span class="tooltip" title="Custo total por hora do analista (incluindo encargos trabalhistas, benefícios e infra).">ℹ️</span>
+          </label>
+          <input type="range" id="custo-hora" min="15" max="80" step="5" value="30" oninput="calc()">
+          <div class="value-display">
+            <span class="range-val" id="custo-hora-val">R$ 30</span>
+            <span class="range-label">por hora de trabalho</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
 
   <!-- RESULTADO -->
   <div class="result-card">
@@ -444,11 +704,54 @@
     </div>
   </div>
 
+  <!-- INSIGHTS & SIMULATOR -->
+  <div class="extra-insights">
+    <div class="insight-box">
+      <div class="insight-title">📊 Benchmark Setorial (Last-Mile BR)</div>
+      <div class="insight-row">
+        <span style="color:var(--muted);">Sua taxa de falha de rastreio:</span>
+        <span class="insight-val" id="bench-atual">2.0%</span>
+      </div>
+      <div class="insight-row">
+        <span style="color:var(--muted);">Média do setor (sem OCC):</span>
+        <span class="insight-val" style="color:var(--amber);">3.5%</span>
+      </div>
+      <div class="insight-row">
+        <span style="color:var(--muted);">Projeção com Agis OCC:</span>
+        <span class="insight-val" style="color:var(--green);">0.5%</span>
+      </div>
+      <div class="insight-status-green" id="bench-verdict">
+        ✓ Sua operação está dentro do padrão esperado
+      </div>
+    </div>
+
+    <div class="insight-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px;">
+      <div class="sim-card-sem">
+        <div style="font-size:10px; font-weight:700; color:var(--red);">❌ SEM AGIS</div>
+        <div class="sim-val red" id="sim-sem-val">R$ 0</div>
+        <div style="font-size:10px; color:var(--muted); margin-top:4px;">Custo desperdiçado/mês</div>
+      </div>
+      <div class="sim-card-com">
+        <div style="font-size:10px; font-weight:700; color:var(--green);">✓ COM AGIS</div>
+        <div class="sim-val green" id="sim-com-val">R$ 0</div>
+        <div style="font-size:10px; color:var(--muted); margin-top:4px;">Resultado Líquido/mês</div>
+      </div>
+    </div>
+  </div>
+
   <div class="cta">
-    <p class="cta-text">Quer ver esses números com os dados reais da sua operação?</p>
-    <a href="mailto:contato@agisops.com.br?subject=Quero um piloto Agis" class="cta-btn">
-      Solicitar Piloto Gratuito de 30 dias →
-    </a>
+    <p class="cta-text">Quer ver esses números aplicados nos dados reais do seu depósito?</p>
+    <div class="actions-bar">
+      <button onclick="exportPDF()" class="cta-btn btn-secondary">
+        📄 Salvar Relatório PDF
+      </button>
+      <button onclick="copyLink()" class="cta-btn btn-secondary">
+        🔗 Compartilhar Parâmetros
+      </button>
+      <a href="mailto:contato@agisops.com.br?subject=Quero um piloto Agis" class="cta-btn">
+        Solicitar Piloto Gratuito de 30 dias →
+      </a>
+    </div>
   </div>
 
   <footer>
@@ -473,6 +776,9 @@
   }
 
   function fmt(val) {
+    if (val < 0) {
+      return '- R$ ' + Math.abs(Math.round(val)).toLocaleString('pt-BR');
+    }
     return 'R$ ' + Math.round(val).toLocaleString('pt-BR');
   }
 
@@ -485,7 +791,14 @@
     const horas      = +document.getElementById('horas').value;
     const custoPlano = PLANS[selectedPlan];
 
-    // Update labels
+    // Advanced coefficients
+    const pctReentrega = +document.getElementById('pct-reentrega').value / 100;
+    const pctDevolucao = +document.getElementById('pct-devolucao').value / 100;
+    const pctCustoDev  = +document.getElementById('pct-custo-dev').value / 100;
+    const pctHorasRec  = +document.getElementById('pct-horas-rec').value / 100;
+    const custoHora    = +document.getElementById('custo-hora').value;
+
+    // Update basic displays
     document.getElementById('pedidos-val').textContent = pedidos;
     document.getElementById('ticket-val').textContent  = 'R$ ' + ticket;
     document.getElementById('frete-val').textContent   = 'R$ ' + frete;
@@ -493,29 +806,50 @@
     document.getElementById('pct-falha-val').textContent = (pctFalha * 100).toFixed(1) + '%';
     document.getElementById('horas-val').textContent   = horas + 'h';
 
-    // --- CÁLCULOS ---
-    const diasMes = 22; // dias úteis
+    // Update advanced displays
+    document.getElementById('pct-reentrega-val').textContent = (pctReentrega * 100).toFixed(0) + '%';
+    document.getElementById('pct-devolucao-val').textContent = (pctDevolucao * 100).toFixed(0) + '%';
+    document.getElementById('pct-custo-dev-val').textContent = (pctCustoDev * 100).toFixed(0) + '%';
+    document.getElementById('pct-horas-rec-val').textContent = (pctHorasRec * 100).toFixed(0) + '%';
+    document.getElementById('custo-hora-val').textContent = 'R$ ' + custoHora;
 
-    // 1. Reentregas evitadas
-    const falhasDia   = pedidos * pctFalha;
-    const falhaMes    = falhasDia * diasMes;
-    const saveReentrega = falhaMes * frete * 0.7; // 70% das falhas viram reentrega
+    // 1. Capacity warning
+    const planoMax = { start: 500, operador: 2000, hub: Infinity };
+    const planoNome = { start: 'Start', operador: 'Operador', hub: 'Hub' };
+    const alertBox = document.getElementById('plano-alerta');
+    
+    if (pedidos > planoMax[selectedPlan] && selectedPlan !== 'hub') {
+      let planoSugerido = 'hub';
+      if (pedidos <= 2000) planoSugerido = 'operador';
+      document.getElementById('alerta-pedidos').textContent = pedidos;
+      document.getElementById('alerta-plano').textContent = planoNome[planoSugerido];
+      alertBox.style.display = 'block';
+    } else {
+      alertBox.style.display = 'none';
+    }
 
-    // 2. Devoluções / cancelamentos (30% das falhas viram devolução com custo de ticket)
-    const saveDevolucao = falhaMes * 0.3 * (ticket * 0.15); // 15% do ticket em custo de devolução
+    // 2. Calculations
+    const diasMes = 22; // Dias úteis operacionais
+    const falhasMes = pedidos * pctFalha * diasMes;
 
-    // 3. Horas de equipe (custo hora = R$30)
-    const saveHoras = pessoas * horas * 0.6 * 30 * diasMes; // 60% das horas são recuperáveis
+    // 📦 Save reentregas
+    const saveReentrega = falhasMes * pctReentrega * frete;
+    // 🔁 Save cancelamentos
+    const saveDevolucao = falhasMes * pctDevolucao * (ticket * pctCustoDev);
+    // ⏱️ Save tempo operacional
+    const saveHoras = pessoas * horas * pctHorasRec * custoHora * diasMes;
 
     const totalBruto = saveReentrega + saveDevolucao + saveHoras;
     const liquido    = totalBruto - custoPlano;
     const roi        = ((totalBruto - custoPlano) / custoPlano) * 100;
-    const payback    = Math.round(8000 / (totalBruto / diasMes));
+    
+    // Payback safely calculated without division by zero
+    const payback = totalBruto > 0 ? Math.round(8000 / (totalBruto / diasMes)) : 0;
 
-    // Update UI
+    // Update UI numbers
     document.getElementById('economia-total').textContent = fmt(totalBruto);
     document.getElementById('roi-pct').textContent = (roi > 0 ? '+' : '') + Math.round(roi) + '%';
-    document.getElementById('payback').textContent = payback + ' dias';
+    document.getElementById('payback').textContent = payback > 0 ? payback + ' dias' : 'N/A';
 
     document.getElementById('b-reentrega').textContent  = fmt(saveReentrega);
     document.getElementById('b-devolucao').textContent  = fmt(saveDevolucao);
@@ -523,27 +857,94 @@
     document.getElementById('b-custo').textContent      = '- ' + fmt(custoPlano);
     document.getElementById('b-liquido').textContent    = fmt(liquido);
 
-    // Verdict
+    // Simulator before/after
+    document.getElementById('sim-sem-val').textContent = fmt(totalBruto);
+    document.getElementById('sim-com-val').textContent = fmt(liquido);
+
+    // Benchmark updates
+    document.getElementById('bench-atual').textContent = (pctFalha * 100).toFixed(1) + '%';
+    const benchVerdict = document.getElementById('bench-verdict');
+    if (pctFalha * 100 > 3.5) {
+      benchVerdict.innerHTML = '⚠️ Sua operação está <strong>acima da média crítica</strong> de perdas.';
+      benchVerdict.style.color = 'var(--red)';
+    } else {
+      benchVerdict.innerHTML = '✓ Sua taxa de falhas está sob controle em relação à média nacional';
+      benchVerdict.style.color = 'var(--green)';
+    }
+
+    // Verdict message updates
     const vBox = document.getElementById('verdict-box');
     const vTxt = document.getElementById('verdict-text');
     const vSub = document.getElementById('verdict-sub');
 
     if (liquido > 0) {
       vTxt.textContent = `Sua operação ganha R$ ${Math.round(liquido).toLocaleString('pt-BR')}/mês líquidos com o Agis.`;
-      vSub.textContent = `O piloto (R$ 8.000) se paga em ${payback} dias. O ROI mensal é de ${Math.round(roi)}%.`;
+      vSub.textContent = payback > 0 
+        ? `O investimento do piloto (R$ 8.000) se paga em ${payback} dias úteis.` 
+        : `Retorno financeiro imediato após implementação.`;
       vBox.style.background = 'var(--green-glow)';
       vBox.style.borderColor = 'rgba(16,185,129,0.2)';
       vTxt.style.color = 'var(--green)';
     } else {
-      vTxt.textContent = 'O Agis começa a ser lucrativo acima de 150 pedidos/dia.';
-      vSub.textContent = 'Ajuste os parâmetros para refletir melhor sua operação.';
+      vTxt.textContent = 'O Agis se torna financeiramente viável ao reduzir falhas no volume atual.';
+      vSub.textContent = 'Experimente ajustar os parâmetros avançados ou aumentar o volume diário de pacotes.';
       vBox.style.background = 'rgba(245,158,11,0.08)';
       vBox.style.borderColor = 'rgba(245,158,11,0.2)';
       vTxt.style.color = 'var(--amber)';
     }
   }
 
-  calc();
+  // Share calculation parameters via URL
+  function copyLink() {
+    const params = new URLSearchParams({
+      pedidos: document.getElementById('pedidos').value,
+      ticket: document.getElementById('ticket').value,
+      frete: document.getElementById('frete').value,
+      pessoas: document.getElementById('pessoas').value,
+      pctFalha: document.getElementById('pct-falha').value,
+      horas: document.getElementById('horas').value,
+      pctReentrega: document.getElementById('pct-reentrega').value,
+      pctDevolucao: document.getElementById('pct-devolucao').value,
+      pctCustoDev: document.getElementById('pct-custo-dev').value,
+      pctHorasRec: document.getElementById('pct-horas-rec').value,
+      custoHora: document.getElementById('custo-hora').value,
+      plano: selectedPlan
+    });
+    
+    const url = window.location.origin + window.location.pathname + '?' + params.toString();
+    navigator.clipboard.writeText(url).then(() => {
+      alert('Parâmetros da simulação copiados! O link configurado já está na sua área de transferência.');
+    });
+  }
+
+  // Print friendly PDF
+  function exportPDF() {
+    window.print();
+  }
+
+  // Load calculation state from URL if present
+  function loadFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const inputs = [
+      'pedidos', 'ticket', 'frete', 'pessoas', 'pct-falha', 'horas',
+      'pct-reentrega', 'pct-devolucao', 'pct-custo-dev', 'pct-horas-rec', 'custo-hora'
+    ];
+    
+    inputs.forEach(id => {
+      const paramName = id.replace(/-([a-z])/g, g => g[1].toUpperCase());
+      if (params.has(paramName)) {
+        document.getElementById(id).value = params.get(paramName);
+      }
+    });
+
+    if (params.has('plano')) {
+      selectPlan(params.get('plano'));
+    } else {
+      calc();
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadFromURL);
 </script>
 </body>
 </html>

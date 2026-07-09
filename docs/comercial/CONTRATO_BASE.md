@@ -156,9 +156,32 @@ Excluem-se do cálculo: manutenções programadas, falhas de infraestrutura do C
 
 ## 5. PROPRIEDADE INTELECTUAL E DADOS
 
-### 5.1 Propriedade do Software
+### 5.1 Propriedade do Software e Know-How
 
-O sistema Agis Ops, incluindo seu código-fonte, arquitetura, motor OCC e documentação técnica, é de propriedade exclusiva da CONTRATADA. Este contrato concede ao CONTRATANTE uma **licença de uso**, não exclusiva e intransferível, pelo período de vigência do contrato.
+O sistema Agis Ops, incluindo mas não se limitando a:
+- Código-fonte, arquitetura e documentação técnica
+- Motor cognitivo OCC (Operational Cognitive Computing) — Representations, Beliefs, Intentions e Decisions
+- Modelos de dados, ontologias e vocabulário formal do domínio logístico
+- Algoritmos de roteirização, otimização e atribuição de motoristas
+- Heurísticas de cálculo de confiança e decaimento temporal de estados
+- Métodos de normalização e consolidação de pedidos multi-plataforma
+- Conceitos de "Estado Operacional", "Beliefs", "Intentions", "Representations" e "Decisions" aplicados ao domínio logístico
+
+É de propriedade intelectual exclusiva da CONTRATADA, protegida pela Lei 9.610/98 (Direitos Autorais) e Lei 9.279/96 (Propriedade Industrial).
+
+Este contrato concede ao CONTRATANTE uma **licença de uso**, não exclusiva, intransferível e revogável, pelo período de vigência do contrato.
+
+### 5.1.1 Vedação Expressa
+
+É expressamente vedado ao CONTRATANTE:
+
+a) Realizar engenharia reversa, descompilação ou extração de algoritmos do sistema;
+b) Documentar, replicar ou implementar conceitos, métodos ou heurísticas observadas durante o uso do sistema;
+c) Utilizar o conhecimento obtido através do sistema para desenvolver soluções concorrentes ou similares, diretamente ou através de terceiros;
+d) Compartilhar credenciais de acesso com terceiros não autorizados;
+e) Permitir que concorrentes do CONTRATANTE tenham acesso ao sistema.
+
+A violação desta cláusula sujeitará o CONTRATANTE ao pagamento de multa de **R$ 500.000,00 (quinhentos mil reais)**, sem prejuízo de perdas e danos adicionais e medidas judiciais cabíveis.
 
 ### 5.2 Propriedade dos Dados
 
@@ -184,19 +207,42 @@ As partes comprometem-se a manter em sigilo todas as informações técnicas, co
 
 ## 7. GARANTIA DE SATISFAÇÃO
 
-### 7.1 Piloto com Garantia Total
+### 7.1 Estabelecimento de Baseline
 
-Se ao final dos **30 dias de piloto** o sistema Agis Ops não demonstrar redução mensurável em pelo menos **uma** das métricas abaixo, em comparação ao sistema anterior:
+Antes do início do piloto de 30 dias, o CONTRATANTE deverá fornecer à CONTRATADA os seguintes dados dos **30 dias anteriores**:
 
-- Tempo médio de recuperação de pedidos com ocorrência
-- Taxa de reentregas por falha de rastreamento
-- Horas de equipe gastas com ocorrências operacionais
+- [ ] Volume médio diário de pedidos
+- [ ] Taxa de reentregas por falha de rastreamento (%)
+- [ ] Tempo médio de resolução de ocorrências (horas)
+- [ ] Horas/dia gastas pela equipe com ocorrências
+- [ ] Taxa de devoluções/cancelamentos (%)
 
-A CONTRATADA devolverá **100% do valor de implantação pago**, sem custo para o CONTRATANTE, mediante solicitação formal em até 5 dias após o encerramento do piloto.
+Caso o CONTRATANTE não possua esses dados, será utilizado o período de **7 dias imediatamente anteriores** ao início do piloto como baseline, medido manualmente pela equipe do CONTRATANTE com validação da CONTRATADA.
 
-### 7.2 Demonstração da Métrica
+### 7.2 Critério de Sucesso
 
-A comparação será baseada em dados extraídos do próprio sistema Agis (que registra todas as métricas desde o primeiro dia) versus referência fornecida pelo CONTRATANTE dos 30 dias anteriores ao início do piloto.
+O piloto será considerado bem-sucedido se, ao final dos 30 dias, houver melhoria em pelo menos **UMA** das métricas abaixo:
+
+| Métrica | Melhoria Mínima Requerida |
+|:---|:---|
+| Tempo de resolução de ocorrências | ≥ 20% de redução |
+| Taxa de reentregas | ≥ 15% de redução |
+| Horas de equipe com ocorrências | ≥ 25% de redução |
+
+### 7.3 Medição
+
+A medição será feita com base em:
+- Dados extraídos do sistema Agis (fonte primária)
+- Relatório comparativo gerado automaticamente ao final do piloto
+- Validação conjunta em reunião de encerramento formal
+
+### 7.4 Reembolso
+
+Se o critério de sucesso não for atingido, o CONTRATANTE poderá solicitar reembolso integral do valor de implantação em até **5 (cinco) dias úteis** após a reunião de encerramento. O reembolso será processado em até **10 (dez) dias úteis**.
+
+### 7.5 Conversão para Contrato Definitivo
+
+Se o critério de sucesso for atingido, o contrato converte-se automaticamente em definitivo, iniciando a cobrança da mensalidade conforme Cláusula 3.2.
 
 ---
 
@@ -315,5 +361,159 @@ CPF:                          CPF:
 
 ---
 
-*Documento gerado em 2026 — Agis Ops · Versão 1.0*
-*Este modelo não constitui assessoria jurídica. Recomenda-se revisão por advogado antes de uso.*
+## 12. LIMITAÇÃO DE RESPONSABILIDADE
+
+### 12.1 Teto de Responsabilidade
+
+A responsabilidade total da CONTRATADA, em qualquer circunstância, limita-se ao valor de **3 (três) mensalidades** pagas pelo CONTRATANTE nos 3 (três) meses imediatamente anteriores ao evento danoso.
+
+### 12.2 Exclusão de Danos Indiretos
+
+Em nenhuma hipótese a CONTRATADA será responsável por:
+
+a) Lucros cessantes, perda de receita ou perda de oportunidade de negócio;
+b) Danos indiretos, incidentais ou consequenciais;
+c) Perda de dados decorrente de falha de backup do CONTRATANTE;
+d) Danos causados por uso indevido do sistema pelo CONTRATANTE;
+e) Falhas decorrentes de infraestrutura de terceiros (internet, servidores de marketplace, APIs externas).
+
+### 12.3 Exceções
+
+As limitações acima **não se aplicam** em casos de:
+a) Dolo comprovado da CONTRATADA;
+b) Violação de confidencialidade;
+c) Violação de direitos de propriedade intelectual.
+
+---
+
+## 13. NÃO-SOLICITAÇÃO
+
+### 13.1
+
+Durante a vigência deste contrato e por **12 (doze) meses** após seu encerramento, nenhuma parte poderá:
+
+a) Solicitar, contratar ou engajar diretamente qualquer funcionário ou prestador de serviço da outra parte que tenha participado da execução deste contrato;
+b) Induzir qualquer funcionário ou prestador de serviço da outra parte a rescindir seu vínculo ou contrato.
+
+### 13.2 Penalidade
+
+A violação desta cláusula sujeitará a parte infratora ao pagamento de multa equivalente a **50% (cinquenta por cento) da remuneração anual** do profissional solicitado, sem prejuízo de perdas e danos.
+
+### 13.3 Exceções
+
+Esta cláusula não se aplica a contratações em resposta a anúncios públicos de emprego, desde que o profissional tenha se candidatado espontaneamente, ou a profissionais que já não trabalhem para a outra parte há mais de 6 (seis) meses.
+
+---
+
+## 14. PROPRIEDADE SOBRE MELHORIAS
+
+### 14.1
+
+Qualquer sugestão, feedback ou ideia fornecida pelo CONTRATANTE à CONTRATADA durante a vigência deste contrato será considerada de **propriedade exclusiva da CONTRATADA**, que poderá implementá-la livremente no sistema, sem compensação ao CONTRATANTE.
+
+### 14.2 Desenvolvimento Customizado
+
+Melhorias solicitadas especificamente para o CONTRATANTE que envolvam desenvolvimento customizado serão objeto de proposta comercial separada, com propriedade definida em contrato específico.
+
+---
+
+## 15. LIMITES DE USO
+
+### 15.1
+
+Caso o CONTRATANTE exceda o limite do plano contratado por mais de 10 (dez) dias consecutivos ou 15 (quinze) dias alternados no mês, a CONTRATADA poderá:
+
+a) Notificar o CONTRATANTE para adequação ao plano adequado em até 5 (cinco) dias úteis;
+b) Migrar automaticamente o CONTRATANTE para o plano imediatamente superior, com cobrança proporcional (pro rata);
+c) Suspender o serviço caso não haja adequação em até 10 (dez) dias após notificação.
+
+### 15.2 Cobrança de Excedente
+
+| Plano Contratado | Valor por Pedido Excedente |
+|:---|:---|
+| Start | R$ 0,50 por pedido acima de 500/dia |
+| Operador | R$ 0,35 por pedido acima de 2.000/dia |
+| Hub | Sem limite |
+
+### 15.3 Monitoramento
+
+A CONTRATADA fornecerá relatório mensal de utilização, com alerta automático ao atingir 80% do limite do plano.
+
+---
+
+## 16. ACEITAÇÃO FORMAL
+
+### 16.1 Termo de Aceitação Técnica
+
+Ao final da fase de implantação, a CONTRATADA apresentará ao CONTRATANTE o **Termo de Aceitação Técnica**, contendo:
+
+- [ ] Sistema acessível e funcional
+- [ ] Integrações configuradas e testadas
+- [ ] Dashboard operacional com dados do CONTRATANTE
+- [ ] Treinamento da equipe concluído (com lista de presença)
+- [ ] Documentação entregue
+
+### 16.2 Prazo de Validação
+
+O CONTRATANTE terá **3 (três) dias úteis** para validar o Termo. Findo o prazo sem manifestação, o sistema será considerado aceito automaticamente, iniciando o período de piloto e a cobrança da segunda parcela.
+
+### 16.3 Não-Conformidades
+
+Caso o CONTRATANTE identifique não-conformidades, deverá apresentar lista detalhada em até 3 (três) dias úteis. A CONTRATADA terá 5 (cinco) dias úteis para correção.
+
+---
+
+## 17. FORÇA MAIOR
+
+### 17.1
+
+Nenhuma parte será responsável por falhas ou atrasos decorrentes de eventos de força maior, incluindo mas não se limitando a: catástrofes naturais, guerras, atos de terrorismo, pandemias, falhas generalizadas de internet ou energia elétrica, atos de autoridade governamental, e ataques cibernéticos de larga escala (DDoS) que afetem múltiplos provedores.
+
+### 17.2
+
+A parte afetada deverá notificar a outra em até **24 horas** e tomar todas as medidas razoáveis para mitigar os efeitos. Se o evento persistir por mais de **30 (trinta) dias**, qualquer parte poderá rescindir o contrato sem multa.
+
+---
+
+## 18. SUBCONTRATAÇÃO
+
+### 18.1
+
+A CONTRATADA poderá utilizar serviços de terceiros para infraestrutura (cloud, CDN, backups), desde que os subcontratados estejam localizados em território brasileiro ou em países com nível adequado de proteção de dados, e haja contrato de processamento de dados com cláusulas equivalentes a este instrumento.
+
+### 18.2
+
+A CONTRATADA permanece **integralmente responsável** pelo cumprimento deste contrato, mesmo em relação a serviços subcontratados.
+
+---
+
+## 19. DADOS ANONIMIZADOS E AGREGADOS
+
+### 19.1
+
+A CONTRATADA poderá utilizar dados anonimizados e agregados do CONTRATANTE para: análise de tendências do setor, melhoria de algoritmos e heurísticas do sistema, e benchmarking agregado (sem identificação do CONTRATANTE).
+
+### 19.2 Opt-Out
+
+O CONTRATANTE pode optar por não autorizar o uso de dados anonimizados mediante notificação formal por escrito.
+
+---
+
+## ANEXO II — Licença de Uso de Software
+
+*(Complementar ao contrato principal — proteção específica do motor OCC e propriedade intelectual tecnológica)*
+
+**Software licenciado:** Agis Ops v3.0+, incluindo motor OCC, algoritmos de roteirização e vocabulário formal.
+
+**Tipo de licença:** Uso não-exclusivo, intransferível, limitado ao CNPJ do CONTRATANTE.
+
+**Vedações:** Engenharia reversa, sublicenciamento, redistribuição, cópia, adaptação não autorizada.
+
+**Prazo:** Vigência do contrato de prestação de serviços.
+
+**Penalidade por violação:** R$ 500.000,00 conforme Cláusula 5.1.1.
+
+---
+
+*Documento gerado em 2026 — Agis Ops · Versão 2.0*
+*Este modelo não constitui assessoria jurídica. Recomenda-se revisão por advogado especializado em TI antes de uso.*

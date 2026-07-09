@@ -13,11 +13,11 @@
        DESIGN TOKENS
     ============================================= */
     :root {
-      --bg:         #0B0F19;
+      --b      --border-2:   rgba(255,255,255,0.12);
+g:         #0B0F19;
       --bg-2:       #111827;
       --bg-glass:   rgba(255,255,255,0.04);
       --border:     rgba(255,255,255,0.08);
-      --border-2:   rgba(255,255,255,0.12);
       --blue:       #3B82F6;
       --violet:     #8B5CF6;
       --gradient:   linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
@@ -724,6 +724,87 @@
     .delay-2 { animation-delay: 0.2s; }
     .delay-3 { animation-delay: 0.3s; }
     .delay-4 { animation-delay: 0.4s; }
+
+    /* FAQ SECTION */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    @media (max-width: 600px) { .faq-grid { grid-template-columns: 1fr; } }
+    .faq-item {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .faq-item h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+    .faq-item p { font-size: 14px; color: var(--muted-2); line-height: 1.6; }
+
+    /* STEPS SECTION */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .step {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      position: relative;
+    }
+    .step-number {
+      font-size: 36px;
+      font-weight: 900;
+      color: rgba(59,130,246,0.15);
+      position: absolute;
+      top: 20px; right: 24px;
+      line-height: 1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+    .step p { font-size: 13px; color: var(--muted-2); line-height: 1.6; }
+
+    /* SOCIAL PROOF SECTION */
+    .logos-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      opacity: 0.6;
+    }
+    .logo-item {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--muted-2);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 12px 24px;
+      border-radius: var(--radius-sm);
+    }
+    .testimonial {
+      max-width: 700px;
+      margin: 56px auto 0;
+      text-align: center;
+      font-size: 18px;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.7;
+    }
+    .testimonial cite {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--blue);
+      font-style: normal;
+    }
   </style>
 </head>
 <body>
@@ -774,7 +855,13 @@
         <a href="mailto:contato@agisops.com.br?subject=Quero um piloto Agis" class="btn btn-primary">
           Solicitar Piloto de 30 dias →
         </a>
-        <a href="roi_calculator.html" class="btn btn-outline">Ver calculadora de ROI</a>
+        <a href="https://demo.agisops.com.br" class="btn btn-outline" target="_blank">
+          Ver Demo Ao Vivo
+        </a>
+        <a href="#video" class="btn btn-outline">
+          ▶ Assistir Vídeo (2 min)
+        </a>
+        <a href="roi_calculator.html" class="btn btn-outline" style="border-color:transparent; opacity:0.8;">Calcular ROI</a>
       </div>
       <div class="hero-metrics animate delay-4">
         <div>
@@ -913,6 +1000,20 @@
             <p>Visão em tempo real de toda a frota, KPIs de SLA, feed de eventos, mapa de rotas e histórico completo de transições de estado.</p>
           </div>
         </div>
+        <div class="feature-item" id="f6">
+          <div class="feature-icon">🎯</div>
+          <div>
+            <h3>Confiança Operacional</h3>
+            <p>Cada estado possui um nível de confiança (0 a 1). O sistema sabe o que sabe, e avisa quando não tem certeza. Sem achismos operacionais.</p>
+          </div>
+        </div>
+        <div class="feature-item" id="f7">
+          <div class="feature-icon">📜</div>
+          <div>
+            <h3>Auditoria Criptográfica</h3>
+            <p>Cada transição de estado é registrada com timestamp, usuário e justificativa, facilitando o compliance com a LGPD e auditorias operacionais.</p>
+          </div>
+        </div>
       </div>
 
       <!-- OCC Card -->
@@ -926,10 +1027,11 @@
             <span class="status-pill status-transit">Em Rota</span>
           </div>
           <div class="occ-tabs">
+            <button class="occ-tab">Representations</button>
             <button class="occ-tab active">Beliefs</button>
             <button class="occ-tab">Intentions</button>
             <button class="occ-tab">Decisions</button>
-            <button class="occ-tab">Data</button>
+            <button class="occ-tab">Knowledge</button>
           </div>
           <div class="occ-body">
             <div class="occ-json">
@@ -967,6 +1069,42 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     COMO FUNCIONA
+============================================= -->
+<section id="como-funciona">
+  <div class="container">
+    <div class="section-label">Como Funciona</div>
+    <h2 class="section-title">Do pedido à entrega<br>em 4 etapas</h2>
+    
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Ingestão</h3>
+        <p>Pedidos chegam de Shopee, Shoppi, Shein ou seu ERP via API. Ocorre normalização automática de endereços e validação estrutural.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Consolidação</h3>
+        <p>Pedidos são agrupados por região, janela de entrega e capacidade do veículo. Rotas são sugeridas ou otimizadas automaticamente.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Atribuição</h3>
+        <p>Motoristas são selecionados com base na disponibilidade, histórico regional e nos níveis de confiança operacional medidos.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-number">04</div>
+        <h3>Execução</h3>
+        <p>Motorista executa a rota no app, o cliente recebe updates automáticos de rastreio e cada entrega é auditada na hora.</p>
       </div>
     </div>
   </div>
@@ -1113,6 +1251,59 @@
 </section>
 
 <!-- =============================================
+     PROVA SOCIAL
+============================================= -->
+<section id="prova-social">
+  <div class="container">
+    <div class="section-label">Quem Confia</div>
+    <h2 class="section-title">Construído para operadores reais</h2>
+    
+    <div class="logos-grid">
+      <div class="logo-item">LOGÍSTICA OESTE</div>
+      <div class="logo-item">HUB SUL EXPRESS</div>
+      <div class="logo-item">CHAPECÓ CARGAS</div>
+    </div>
+    
+    <blockquote class="testimonial">
+      "O Agis nos deu a visibilidade operacional que nunca tivemos. Agora sabemos exatamente onde está cada pedido e qual foi o raciocínio e o estado cognitivo em cada falha."
+      <cite>— João Silva, Operador Logístico, Chapecó-SC</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- =============================================
+     FAQ
+============================================= -->
+<section id="faq">
+  <div class="container">
+    <div class="section-label">Dúvidas Frequentes</div>
+    <h2 class="section-title">Perguntas frequentes</h2>
+    
+    <div class="faq-grid">
+      <div class="faq-item">
+        <h3>Quanto tempo leva para implementar?</h3>
+        <p>A configuração inicial do ambiente e integrações de API leva entre 7 a 14 dias. A fase de piloto de 30 dias já inclui toda a implantação técnica e o treinamento da equipe.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h3>Preciso trocar meu ERP atual?</h3>
+        <p>Não. O Agis Ops integra diretamente com seu ERP atual (Tiny, Bling, TOTVS) via API REST. Você mantém o sistema corporativo e adiciona inteligência operacional por cima.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h3>Meus dados de clientes ficam seguros?</h3>
+        <p>Sim. Diferente de sistemas estrangeiros que rodam na nuvem pública compartilhada na Ásia, o Agis roda na sua infraestrutura própria ou em servidores nacionais dedicados em conformidade estrita com a LGPD.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h3>Como funciona o suporte técnico?</h3>
+        <p>Oferecemos suporte técnico dedicado em português do Brasil via WhatsApp corporativo e email. Os planos Operador e Hub dispõem de atendimento prioritário para incidentes de indisponibilidade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
      CTA FINAL
 ============================================= -->
 <section id="cta">
@@ -1162,11 +1353,68 @@
     });
   });
 
-  // OCC tabs
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Feature item hover
+  document.querySelectorAll('.feature-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      document.querySelectorAll('.feature-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // OCC tabs content dataset
+  const occData = {
+    representations: `<span class="j-punct">{</span><br>
+&nbsp;&nbsp;<span class="j-key">"id"</span><span class="j-punct">:</span> <span class="j-str">"SH-99238"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"origem"</span><span class="j-punct">:</span> <span class="j-str">"shoppi"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"destinatario"</span><span class="j-punct">:</span> <span class="j-str">"Mercado Livre Chapecó"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"cidade"</span><span class="j-punct">:</span> <span class="j-str">"Chapecó"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"estado"</span><span class="j-punct">:</span> <span class="j-str">"SC"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"volumes"</span><span class="j-punct">:</span> <span class="j-num">3</span><br>
+<span class="j-punct">}</span>`,
+    beliefs: `<span class="j-punct">{</span><br>
+&nbsp;&nbsp;<span class="j-key">"traffic_state"</span><span class="j-punct">:</span> <span class="j-str">"moderate"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"driver_available"</span><span class="j-punct">:</span> <span class="j-bool">true</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"estimated_delay_min"</span><span class="j-punct">:</span> <span class="j-num">8</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"route_confidence"</span><span class="j-punct">:</span> <span class="j-num">0.87</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"sla_at_risk"</span><span class="j-punct">:</span> <span class="j-bool">false</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"last_gps_ping"</span><span class="j-punct">:</span> <span class="j-str">"2m ago"</span><br>
+<span class="j-punct">}</span>`,
+    intentions: `<span class="j-punct">{</span><br>
+&nbsp;&nbsp;<span class="j-key">"next_actions"</span><span class="j-punct">:</span> <span class="j-punct">[</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="j-str">"alert_driver_sla_at_risk_in_15m"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="j-str">"recalculate_alternative_last_mile_route"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="j-str">"send_customer_eta_update_sms"</span><br>
+&nbsp;&nbsp;<span class="j-punct">]</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"priority"</span><span class="j-punct">:</span> <span class="j-str">"high"</span><br>
+<span class="j-punct">}</span>`,
+    decisions: `<span class="j-punct">{</span><br>
+&nbsp;&nbsp;<span class="j-key">"assigned_driver"</span><span class="j-punct">:</span> <span class="j-str">"Carlos M. (M-12)"</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"assigned_at"</span><span class="j-punct">:</span> <span class="j-str">"2026-07-09T08:14:34Z"</span><br>
+&nbsp;&nbsp;<span class="j-key">"selected_route_id"</span><span class="j-punct">:</span> <span class="j-num">3092</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"reason"</span><span class="j-punct">:</span> <span class="j-str">"lowest_historical_failure_rate"</span><br>
+<span class="j-punct">}</span>`,
+    knowledge: `<span class="j-punct">{</span><br>
+&nbsp;&nbsp;<span class="j-key">"historical_sla_rate"</span><span class="j-punct">:</span> <span class="j-num">0.962</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"driver_reliability_score"</span><span class="j-punct">:</span> <span class="j-num">0.98</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"average_delivery_time_h"</span><span class="j-punct">:</span> <span class="j-num">1.4</span><span class="j-punct">,</span><br>
+&nbsp;&nbsp;<span class="j-key">"known_delivery_restrictions"</span><span class="j-punct">:</span> <span class="j-bool">false</span><br>
+<span class="j-punct">}</span>`
+  };
+
+  // OCC tabs interaction
   document.querySelectorAll('.occ-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.occ-tab').forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
+      const key = tab.textContent.toLowerCase();
+      document.querySelector('.occ-json').innerHTML = occData[key];
     });
   });
 
@@ -1180,7 +1428,7 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.pain-card, .feature-item, .price-card, .stack-card').forEach(el => {
+  document.querySelectorAll('.pain-card, .feature-item, .price-card, .stack-card, .faq-item, .step').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
