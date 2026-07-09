@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agis Ops — Calculadora de ROI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0c10;
+      --surface: #111318;
+      --surface-2: #181c24;
+      --border: #1e2330;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59,130,246,0.15);
+      --green: #10b981;
+      --green-glow: rgba(16,185,129,0.12);
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --card-radius: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; }
+
+    /* HEADER */
+    header { text-align: center; margin-bottom: 48px; }
+    .badge {
+      display: inline-block;
+      background: var(--accent-glow);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin-top: 12px;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 28px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* INPUTS */
+    .field { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .prefix {
+      position: absolute;
+      left: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      background: var(--surface-2);
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+    .value-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .range-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .range-label { font-size: 12px; color: var(--muted); }
+
+    /* RESULT CARD */
+    .result-card {
+      background: linear-gradient(135deg, #0f1f0f 0%, #0a1a12 100%);
+      border: 1px solid rgba(16,185,129,0.25);
+      border-radius: var(--card-radius);
+      padding: 32px;
+      margin-top: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .result-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+    }
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 600px) { .result-grid { grid-template-columns: 1fr; } }
+
+    .metric { text-align: center; }
+    .metric-value {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+    .metric-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+    .metric.positive .metric-value { color: var(--green); }
+    .metric.neutral .metric-value { color: var(--accent); }
+    .metric.warning .metric-value { color: var(--amber); }
+
+    /* BREAKDOWN */
+    .breakdown {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+    .breakdown-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .breakdown-row:last-child { border-bottom: none; }
+    .breakdown-label { color: #94a3b8; }
+    .breakdown-val { font-weight: 600; }
+    .loss { color: var(--red); }
+    .saving { color: var(--green); }
+    .cost { color: var(--amber); }
+
+    /* VERDICT */
+    .verdict {
+      text-align: center;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 24px;
+      background: var(--green-glow);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+    .verdict-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1.4;
+    }
+    .verdict-sub { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+    /* PLAN SELECTOR */
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    @media (max-width: 600px) { .plans { grid-template-columns: 1fr; } }
+    .plan-btn {
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .plan-btn:hover { border-color: var(--accent); color: var(--text); }
+    .plan-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+      color: var(--accent);
+    }
+    .plan-name { font-size: 13px; font-weight: 700; display: block; }
+    .plan-price { font-size: 11px; margin-top: 3px; }
+
+    /* SEPARATOR */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .cta-text { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 24px rgba(59,130,246,0.3);
+    }
+    .cta-btn:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(59,130,246,0.4);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">Calculadora de ROI</div>
+    <h1>Quanto sua operação perde<br>sem visibilidade?</h1>
+    <p class="subtitle">Preencha os dados abaixo e veja o retorno real do Agis para sua operação.</p>
+  </header>
+
+  <div class="grid">
+    <!-- INPUTS -->
+    <div class="card">
+      <div class="card-title">Sua Operação</div>
+
+      <div class="field">
+        <label>Pedidos por dia</label>
+        <input type="range" id="pedidos" min="50" max="3000" step="50" value="300" oninput="calc()">
+        <div class="value-display">
+          <span class="range-val" id="pedidos-val">300</span>
+          <span class="range-label">pedidos/dia</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Ticket médio por pedido</label>
+        <input type="range" id="ticket" min="20" max="300" step="5" value="80" oninput="calc()">
+        <div class="value-display">
+          <span class="range-val" id="ticket-val">R$ 80</span>
+          <span class="range-label">por pedido</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Custo médio de frete/entrega</label>
+        <input type="range" id="frete" min="5" max="30" step="1" value="12" oninput="calc()">
+        <div class="value-display">
+          <span class="range-val" id="frete-val">R$ 12</span>
+          <span class="range-label">por entrega</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Pessoas na operação</label>
+        <input type="range" id="pessoas" min="1" max="50" step="1" value="5" oninput="calc()">
+        <div class="value-display">
+          <span class="range-val" id="pessoas-val">5</span>
+          <span class="range-label">operadores</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANO -->
+    <div class="card">
+      <div class="card-title">Plano Agis</div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:16px;">Selecione o plano ideal para sua operação:</p>
+
+      <div class="plans">
+        <button class="plan-btn" id="plan-start" onclick="selectPlan('start')">
+          <span class="plan-name">Start</span>
+          <div class="plan-price">R$ 2.500/mês<br>até 500 ped/dia</div>
+        </button>
+        <button class="plan-btn active" id="plan-operador" onclick="selectPlan('operador')">
+          <span class="plan-name">Operador</span>
+          <div class="plan-price">R$ 4.500/mês<br>até 2.000 ped/dia</div>
+        </button>
+        <button class="plan-btn" id="plan-hub" onclick="selectPlan('hub')">
+          <span class="plan-name">Hub</span>
+          <div class="plan-price">R$ 8.000/mês<br>ilimitado</div>
+        </button>
+      </div>
+
+      <hr class="divider">
+
+      <div class="card-title">Parâmetros de Perda (estimativa do setor)</div>
+
+      <div class="field">
+        <label>% de pedidos com falha de rastreamento</label>
+        <input type="range" id="pct-falha" min="0.5" max="10" step="0.5" value="2" oninput="calc()">
+        <div class="value-display">
+          <span class="range-val" id="pct-falha-val">2%</span>
+          <span class="range-label">do volume total</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Horas/dia gastas resolvendo ocorrências</label>
+        <input type="range" id="horas" min="0.5" max="8" step="0.5" value="2" oninput="calc()">
+        <div class="value-display">
+          <span class="range-val" id="horas-val">2h</span>
+          <span class="range-label">por operador</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="result-card">
+    <div class="result-grid">
+      <div class="metric positive">
+        <div class="metric-value" id="economia-total">R$ 0</div>
+        <div class="metric-label">Economia mensal estimada</div>
+      </div>
+      <div class="metric neutral">
+        <div class="metric-value" id="roi-pct">0%</div>
+        <div class="metric-label">ROI sobre investimento</div>
+      </div>
+      <div class="metric warning">
+        <div class="metric-value" id="payback">0 dias</div>
+        <div class="metric-label">Payback do piloto (R$ 8k)</div>
+      </div>
+    </div>
+
+    <div class="breakdown">
+      <div class="breakdown-title">Detalhamento Mensal</div>
+      <div class="breakdown-row">
+        <span class="breakdown-label">📦 Reentregas evitadas (custo de frete)</span>
+        <span class="breakdown-val saving" id="b-reentrega">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-label">🔁 Devoluções/cancelamentos evitados</span>
+        <span class="breakdown-val saving" id="b-devolucao">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-label">⏱️ Horas de equipe recuperadas</span>
+        <span class="breakdown-val saving" id="b-horas">—</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="breakdown-label">💳 Custo mensal do Agis</span>
+        <span class="breakdown-val cost" id="b-custo">—</span>
+      </div>
+      <div class="breakdown-row" style="font-weight:700; font-size:15px;">
+        <span class="breakdown-label" style="color:var(--text);">🟢 Resultado líquido mensal</span>
+        <span class="breakdown-val saving" id="b-liquido">—</span>
+      </div>
+    </div>
+
+    <div class="verdict" id="verdict-box">
+      <div class="verdict-text" id="verdict-text">Calculando...</div>
+      <div class="verdict-sub" id="verdict-sub"></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <p class="cta-text">Quer ver esses números com os dados reais da sua operação?</p>
+    <a href="mailto:contato@agisops.com.br?subject=Quero um piloto Agis" class="cta-btn">
+      Solicitar Piloto Gratuito de 30 dias →
+    </a>
+  </div>
+
+  <footer>
+    Agis Ops © 2026 · Construído no Brasil · Sistema Cognitivo de Logística Soberana
+  </footer>
+
+</div>
+
+<script>
+  const PLANS = {
+    start: 2500,
+    operador: 4500,
+    hub: 8000
+  };
+  let selectedPlan = 'operador';
+
+  function selectPlan(plan) {
+    selectedPlan = plan;
+    document.querySelectorAll('.plan-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('plan-' + plan).classList.add('active');
+    calc();
+  }
+
+  function fmt(val) {
+    return 'R$ ' + Math.round(val).toLocaleString('pt-BR');
+  }
+
+  function calc() {
+    const pedidos    = +document.getElementById('pedidos').value;
+    const ticket     = +document.getElementById('ticket').value;
+    const frete      = +document.getElementById('frete').value;
+    const pessoas    = +document.getElementById('pessoas').value;
+    const pctFalha   = +document.getElementById('pct-falha').value / 100;
+    const horas      = +document.getElementById('horas').value;
+    const custoPlano = PLANS[selectedPlan];
+
+    // Update labels
+    document.getElementById('pedidos-val').textContent = pedidos;
+    document.getElementById('ticket-val').textContent  = 'R$ ' + ticket;
+    document.getElementById('frete-val').textContent   = 'R$ ' + frete;
+    document.getElementById('pessoas-val').textContent  = pessoas;
+    document.getElementById('pct-falha-val').textContent = (pctFalha * 100).toFixed(1) + '%';
+    document.getElementById('horas-val').textContent   = horas + 'h';
+
+    // --- CÁLCULOS ---
+    const diasMes = 22; // dias úteis
+
+    // 1. Reentregas evitadas
+    const falhasDia   = pedidos * pctFalha;
+    const falhaMes    = falhasDia * diasMes;
+    const saveReentrega = falhaMes * frete * 0.7; // 70% das falhas viram reentrega
+
+    // 2. Devoluções / cancelamentos (30% das falhas viram devolução com custo de ticket)
+    const saveDevolucao = falhaMes * 0.3 * (ticket * 0.15); // 15% do ticket em custo de devolução
+
+    // 3. Horas de equipe (custo hora = R$30)
+    const saveHoras = pessoas * horas * 0.6 * 30 * diasMes; // 60% das horas são recuperáveis
+
+    const totalBruto = saveReentrega + saveDevolucao + saveHoras;
+    const liquido    = totalBruto - custoPlano;
+    const roi        = ((totalBruto - custoPlano) / custoPlano) * 100;
+    const payback    = Math.round(8000 / (totalBruto / diasMes));
+
+    // Update UI
+    document.getElementById('economia-total').textContent = fmt(totalBruto);
+    document.getElementById('roi-pct').textContent = (roi > 0 ? '+' : '') + Math.round(roi) + '%';
+    document.getElementById('payback').textContent = payback + ' dias';
+
+    document.getElementById('b-reentrega').textContent  = fmt(saveReentrega);
+    document.getElementById('b-devolucao').textContent  = fmt(saveDevolucao);
+    document.getElementById('b-horas').textContent      = fmt(saveHoras);
+    document.getElementById('b-custo').textContent      = '- ' + fmt(custoPlano);
+    document.getElementById('b-liquido').textContent    = fmt(liquido);
+
+    // Verdict
+    const vBox = document.getElementById('verdict-box');
+    const vTxt = document.getElementById('verdict-text');
+    const vSub = document.getElementById('verdict-sub');
+
+    if (liquido > 0) {
+      vTxt.textContent = `Sua operação ganha R$ ${Math.round(liquido).toLocaleString('pt-BR')}/mês líquidos com o Agis.`;
+      vSub.textContent = `O piloto (R$ 8.000) se paga em ${payback} dias. O ROI mensal é de ${Math.round(roi)}%.`;
+      vBox.style.background = 'var(--green-glow)';
+      vBox.style.borderColor = 'rgba(16,185,129,0.2)';
+      vTxt.style.color = 'var(--green)';
+    } else {
+      vTxt.textContent = 'O Agis começa a ser lucrativo acima de 150 pedidos/dia.';
+      vSub.textContent = 'Ajuste os parâmetros para refletir melhor sua operação.';
+      vBox.style.background = 'rgba(245,158,11,0.08)';
+      vBox.style.borderColor = 'rgba(245,158,11,0.2)';
+      vTxt.style.color = 'var(--amber)';
+    }
+  }
+
+  calc();
+</script>
+</body>
+</html>
