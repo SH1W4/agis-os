@@ -1,0 +1,125 @@
+# DocSync Configuration — Agis Ops v3.0
+# Monitora, valida e mantém a documentação e estrutura do repositório limpos
+version: "1.0"
+
+# Configurações Globais
+global:
+  project: "AGIS"
+  environment: "development"
+  language: "pt_BR"
+  backup_enabled: true
+  quantum_sync: false
+
+# Diretórios Monitorados
+directories:
+  - path: "."
+    type: "documentation"
+    sync_enabled: true
+    patterns:
+      - "*.md"
+      - "*.yaml"
+      - "*.yml"
+      - "*.py"
+      - "*.toml"
+      - "*.ini"
+    exclude:
+      - "**/__pycache__"
+      - "**/.git"
+      - "**/venv"
+      - "**/node_modules"
+      - "**/data"
+      - "**/logs"
+      - "**/*.db"
+      - "**/*.sqlite"
+      - "**/*.sqlite3"
+      - "**/*.xlsx"
+      - "**/*.xls"
+      - "**/Relatórios"
+      - "**/archive"
+
+# Estrutura esperada do projeto (best-practice enforcement)
+structure:
+  root_allowed:
+    - "README.md"
+    - "LICENSE"
+    - "CHANGELOG.md"
+    - "CONTRIBUTING.md"
+    - "SECURITY.md"
+    - "TASKS.md"
+    - "pyproject.toml"
+    - "setup.py"
+    - "requirements.txt"
+    - "requirements-dev.txt"
+    - ".gitignore"
+    - ".env.example"
+    - "alembic.ini"
+    - "docker-compose.yml"
+    - "run_api.py"
+    - "run_worker.py"
+    - "app.py"
+    - "init_db.py"
+  
+  move_to_archive:
+    - "README_OLD.md"
+    - "CONTRIBUTING_OLD.md"
+    - "install_logistica_app.bat"
+    - "install_logistica_app.py"
+    - "install_logistica_web_app.txt"
+    - "start_LogisticSmart.bat"
+    - "logistic_smart_app.py"
+    - "app_entregas_gui.py"
+    - "entregas_por_entregador.py"
+
+  move_to_docs_history:
+    - "SYSTEM_ANALYSIS.md"
+    - "V3_IMPLEMENTATION_SUMMARY.md"
+    - "V3_SETUP_GUIDE.md"
+    - "ORDEM DE ENGENHARIA 001"
+
+  move_to_archive_data:
+    - "Relatorio_entregas.xlsx"
+    - "Relatórios/"
+
+# Validação
+validation:
+  enabled: true
+  rules:
+    - check_metadata
+    - validate_links
+    - verify_structure
+  frequency: "on_commit"
+
+# Monitoramento
+monitoring:
+  enabled: true
+  metrics:
+    - file_changes
+    - sync_status
+    - validation_results
+  logging:
+    level: "INFO"
+    retention: "30d"
+    format: "json"
+
+# Segurança — nunca sincronizar dados sensíveis
+security:
+  encryption: "AES-256"
+  access_control: true
+  audit_logging: true
+  sensitive_patterns:
+    - "*.env"
+    - "*.key"
+    - "*.pem"
+    - "*.db"
+    - "*.sqlite"
+    - "*.xlsx"
+    - "*.xls"
+    - "**/credentials*"
+    - "**/secrets*"
+
+# Backup
+backup:
+  frequency: "on_commit"
+  retention: "30d"
+  type: "incremental"
+  location: "local"
