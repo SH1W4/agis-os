@@ -23,6 +23,7 @@
       --red: #ef4444;
       --text: #e2e8f0;
       --muted: #64748b;
+      --muted-2: #94a3b8;
       --card-radius: 16px;
     }
 
@@ -171,6 +172,14 @@
       width: 220px;
       z-index: 10;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    @media (max-width: 600px) {
+      .tooltip:hover::after {
+        width: min(220px, calc(100vw - 40px));
+        left: auto;
+        right: -40px;
+        transform: none;
+      }
     }
 
     /* RESULT CARD */
@@ -590,6 +599,11 @@
   <!-- ADVANCED COEFFICIENTS -->
   <details>
     <summary>⚙️ Parâmetros Avançados (ajustar coeficientes industriais)</summary>
+    <div style="display:flex; justify-content:flex-end; margin-top:12px; margin-bottom:12px;">
+      <button onclick="resetAdvanced()" class="cta-btn btn-secondary" style="padding:6px 12px; font-size:12px; border-radius:6px;">
+        ↺ Resetar padrões
+      </button>
+    </div>
     <div class="advanced-grid">
       <div>
         <div class="field">
@@ -920,6 +934,22 @@
   // Print friendly PDF
   function exportPDF() {
     window.print();
+  }
+
+  // Reset advanced parameters to industrial defaults
+  const DEFAULTS = {
+    'pct-reentrega': 70,
+    'pct-devolucao': 30,
+    'pct-custo-dev': 15,
+    'pct-horas-rec': 60,
+    'custo-hora': 30
+  };
+
+  function resetAdvanced() {
+    Object.entries(DEFAULTS).forEach(([id, val]) => {
+      document.getElementById(id).value = val;
+    });
+    calc();
   }
 
   // Load calculation state from URL if present
