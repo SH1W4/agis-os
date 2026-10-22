@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Optional
 from uuid import UUID
 from sqlalchemy.orm import Session
 
-from src.database.models import Order, Driver, Route
+from src.database.models import Deposit, Order, Driver, Route
 from src.routing.optimizer import RouteOptimizer, Point, DeliveryPoint
 
 
